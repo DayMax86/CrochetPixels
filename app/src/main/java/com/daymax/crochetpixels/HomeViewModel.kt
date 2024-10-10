@@ -64,6 +64,7 @@ class HomeViewModel : ViewModel() {
 
         var n: Int = 1 // Number of consecutive pixels of same colour
         var previousCell: DataCell? = null
+        var currentCell = Cell(-1, -1, Color.Black, -1)
 
         dataCells.forEach { dc ->
             // The dataCells are all in the right order already so they can just be looped through
@@ -72,7 +73,7 @@ class HomeViewModel : ViewModel() {
                 // Must be the first cell so set to current cell for colour comparison purposes
                 previousCell = dc
             } else {
-                val gridCell = Cell(
+                currentCell = Cell(
                     x = previousCell!!.x,
                     y = previousCell!!.y,
                     colour = Color(
@@ -80,13 +81,13 @@ class HomeViewModel : ViewModel() {
                         green = previousCell!!.colour[1],
                         blue = previousCell!!.colour[2],
                     ),
-                    length = n,
+                    length = n
                 )
 
                 if (previousCell!!.x >= i - 1) {
                     // End of row
                     // Commit current cell
-                    gridCells.add(gridCell)
+                    gridCells.add(currentCell)
                     n = 1
                     Log.d("", "Row number ${dc.y} done")
                 } else {
@@ -94,11 +95,20 @@ class HomeViewModel : ViewModel() {
                         n++
                     } else {
                         // New colour so commit cell to row
-                        gridCells.add(gridCell)
+                        gridCells.add(currentCell)
                         n = 1
                     }
                 }
             }
+        }.apply {
+            gridCells.add(
+                Cell(
+                    x = currentCell!!.x,
+                    y = currentCell!!.y,
+                    colour = currentCell!!.colour,
+                    length = n
+                )
+            )
         }
 
         var k = 0
