@@ -137,6 +137,8 @@ data class Cell(
     val colour: Color,
     val length: Int,
 ) {
+    var done by mutableStateOf(false)
+
     fun invertedColour(): Color {
         return colour.copy(
             alpha = 1f,
@@ -144,6 +146,10 @@ data class Cell(
             green = 1 - colour.green,
             blue = 1 - colour.blue,
         )
+    }
+
+    fun onClick() {
+        done = !done
     }
 }
 
