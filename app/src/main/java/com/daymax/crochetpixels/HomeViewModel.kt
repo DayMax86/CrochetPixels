@@ -137,7 +137,14 @@ data class Cell(
     val colour: Color,
     val length: Int,
 ) {
-
+    fun invertedColour(): Color {
+        return colour.copy(
+            alpha = 1f,
+            red = 1 - colour.red,
+            green = 1 - colour.green,
+            blue = 1 - colour.blue,
+        )
+    }
 }
 
 class GridRow private constructor(
